@@ -1,0 +1,187 @@
+// Retrofit for network requests
+// Retrofit 
+implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+
+// Retrofit with Scalar Converter
+implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+
+// JSON Converter // we can use GsonConverterFactory.create()
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0") 
+
+
+
+// Retrofit with Kotlin serialization Converter
+
+implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+*********************************************************************************
+// in AndroidMenifest.xml just above the application
+
+<uses-permission android:name="android.permission.INTERNET" />
+
+*********************************************************************************
+// kotlinx.serialization library for parsing the JSON returned by the Amphibians API.
+// serialization 
+id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+
+// Kotlin serialization 
+implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+******************************************************************************
+// Coil for image loading
+// Coil
+implementation("io.coil-kt:coil-compose:2.4.0")
+
+*******************************************************************************************
+
+implementation("androidx.activity:activity-compose:1.7.2")
+
+****************************************************************************************
+
+// view Model
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+
+
+
+*******************************************************************************************
+
+//Room
+
+// only when to use ksp
+plugins {
+    ....
+    id("com.google.devtools.ksp") version "1.8.21-1.0.11"
+}
+
+
+dependencies {
+    val room_version = "2.6.0"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+    // To use Kotlin Symbol Processing (KSP)
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+    // optional - RxJava2 support for Room
+    implementation("androidx.room:room-rxjava2:$room_version")
+
+    // optional - RxJava3 support for Room
+    implementation("androidx.room:room-rxjava3:$room_version")
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation("androidx.room:room-guava:$room_version")
+
+    // optional - Test helpers
+    testImplementation("androidx.room:room-testing:$room_version")
+
+    // optional - Paging 3 Integration
+    implementation("androidx.room:room-paging:$room_version")
+}
+
+
+
+********************************************************************************************
+// template for roomdatabase, can be used in file name like InventoryDatabase.kt
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+
+/**
+* Database class with a singleton Instance object.
+*/
+@Database(entities = [Item::class], version = 1, exportSchema = false)
+abstract class InventoryDatabase : RoomDatabase() {
+
+    abstract fun itemDao(): ItemDao
+
+    companion object {
+        @Volatile
+        private var Instance: InventoryDatabase? = null
+
+        fun getDatabase(context: Context): InventoryDatabase {
+            // if the Instance is not null, return it, otherwise create a new database instance.
+            return Instance ?: synchronized(this) {
+                Room.databaseBuilder(context, InventoryDatabase::class.java, "item_database")
+                    .build()
+                    .also { Instance = it }
+            }
+        }
+    }
+}
+
+
+**************************************************************************************************************
+// hilt dependencies
+
+
+
+
+plugins {
+    ...
+   id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+}
+
+
+dependencies {
+    ...
+    // hilt dependencies
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("androidx.hilt:hilt-work:1.1.0")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+}
+
+// after dependencies add : 
+
+kapt {
+    correctErrorTypes = true
+}
+
+
+
+// in project gradle :-> 
+plugins {
+   .....
+    id ("com.google.dagger.hilt.android") version "2.44" apply false
+
+}
+
+
+**************************************************************************************************************
+
+
+
+
+
+//    coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
+
+    // Coroutine Lifecycle Scopes
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+
+*****************************************************************************
+
+ // okHttp
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+
+
+
+
+
+
